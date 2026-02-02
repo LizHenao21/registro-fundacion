@@ -1,4 +1,23 @@
-document.getElementById("registroForm").addEventListener("submit", function(e){
+// Importaciones Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+// Configuración Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyD3bqzkdKkCfaqDznHC75iVZyMKFuFpVNA",
+  authDomain: "registro-fundacion.firebaseapp.com",
+  projectId: "registro-fundacion",
+  storageBucket: "registro-fundacion.firebasestorage.app",
+  messagingSenderId: "494634663720",
+  appId: "1:494634663720:web:9902f9987a5c84a5185a1d"
+};
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Evento formulario
+document.getElementById("registroForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
     const datos = {
@@ -12,13 +31,13 @@ document.getElementById("registroForm").addEventListener("submit", function(e){
         educacion: document.getElementById("educacion").value,
         experiencia: document.getElementById("experiencia").value,
         habilidades: document.getElementById("habilidades").value,
-        fechaRegistro: new Date().toISOString()
+        fechaRegistro: new Date()
     };
 
-    console.log("Hoja de vida registrada:", datos);
+    await addDoc(collection(db, "participantes"), datos);
 
     document.getElementById("mensaje").innerText =
-        "Información registrada correctamente";
+        "Información guardada correctamente";
 
     document.getElementById("registroForm").reset();
 });
