@@ -3,6 +3,12 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbxQU1KSkL9l2rQNUuGOsG
 document.getElementById("registroForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
+    document.getElementById("mensaje").innerText = "Guardando...";
+
+    const file = document.getElementById("firma").files[0];
+
+    const firmaBase64 = await convertirBase64(file);
+
     const datos = {
         nombre: document.getElementById("nombre").value,
         documento: document.getElementById("documento").value,
@@ -13,10 +19,9 @@ document.getElementById("registroForm").addEventListener("submit", async functio
         perfil: document.getElementById("perfil").value,
         educacion: document.getElementById("educacion").value,
         experiencia: document.getElementById("experiencia").value,
-        habilidades: document.getElementById("habilidades").value
+        habilidades: document.getElementById("habilidades").value,
+        firma: firmaBase64
     };
-
-    document.getElementById("mensaje").innerText = "Guardando...";
 
     await fetch(scriptURL, {
         method: "POST",
@@ -29,3 +34,11 @@ document.getElementById("registroForm").addEventListener("submit", async functio
     document.getElementById("registroForm").reset();
 });
 
+function convertirBase64(file){
+    return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
