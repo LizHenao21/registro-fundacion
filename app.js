@@ -1,4 +1,4 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbxQU1KSkL9l2rQNUuGOsGdUKMKZDtNZuyz1PGZySPZQaUtnmEmtcs3EqXchdo9X00oAcQ/exec";
+const scriptURL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
 
 document.getElementById("registroForm").addEventListener("submit", async function(e){
     e.preventDefault();
