@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro Fundación</title>
+
+<style>
+body{
+  font-family: Arial;
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+
+input, textarea, button{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+}
+
+button{
+  background:#2c7be5;
+  color:white;
+  border:none;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Registro de Participantes</h2>
+
+<form id="registroForm">
+
+<input type="text" id="nombre" placeholder="Nombre completo" required>
+
+<input type="text" id="documento" placeholder="Documento" required>
+
+<input type="tel" id="telefono" placeholder="Teléfono" required>
+
+<input type="email" id="correo" placeholder="Correo" required>
+
+<textarea id="perfil" placeholder="Cuéntanos sobre ti"></textarea>
+
+<button type="submit">Guardar Información</button>
+
+</form>
+
+<p id="mensaje"></p>
+
+<script src="app.js"></script>
+
+</body>
+</html>
