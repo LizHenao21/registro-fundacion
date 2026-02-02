@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
 // Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyD3bqzkdKkCfaqDznHC75iVZyMKFuFpVNA",
