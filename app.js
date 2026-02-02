@@ -1,4 +1,4 @@
-const scriptURL = "https://script.google.com/macros/library/d/1SKUjpqxtniuwCNnDX23p5cRzHUYj1uRTOdddS5EtAf0uqkSdHNVK1YbN/2";
+const scriptURL = "https://script.google.com/macros/s/AKfycbxQU1KSkL9l2rQNUuGOsGdUKMKZDtNZuyz1PGZySPZQaUtnmEmtcs3EqXchdo9X00oAcQ/exec";
 
 document.getElementById("registroForm").addEventListener("submit", function(e){
     e.preventDefault();
