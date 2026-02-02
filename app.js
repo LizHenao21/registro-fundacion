@@ -4,16 +4,21 @@ document.getElementById("registroForm").addEventListener("submit", function(e){
     const datos = {
         nombre: document.getElementById("nombre").value,
         documento: document.getElementById("documento").value,
+        nacimiento: document.getElementById("nacimiento").value,
+        direccion: document.getElementById("direccion").value,
         telefono: document.getElementById("telefono").value,
         correo: document.getElementById("correo").value,
         perfil: document.getElementById("perfil").value,
-        fecha: new Date().toISOString()
+        educacion: document.getElementById("educacion").value,
+        experiencia: document.getElementById("experiencia").value,
+        habilidades: document.getElementById("habilidades").value,
+        fechaRegistro: new Date().toISOString()
     };
 
-    console.log("Datos enviados:", datos);
+    console.log("Hoja de vida registrada:", datos);
 
     document.getElementById("mensaje").innerText =
-        "Datos guardados correctamente";
+        "Información registrada correctamente";
 
     document.getElementById("registroForm").reset();
 });
