@@ -1,44 +1,69 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbxQU1KSkL9l2rQNUuGOsGdUKMKZDtNZuyz1PGZySPZQaUtnmEmtcs3EqXchdo9X00oAcQ/exec";
+function doPost(e) {
 
-document.getElementById("registroForm").addEventListener("submit", async function(e){
-    e.preventDefault();
+  try {
 
-    document.getElementById("mensaje").innerText = "Guardando...";
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data = JSON.parse(e.postData.contents);
 
-    const file = document.getElementById("firma").files[0];
+    const base64 = data.firma.split(",")[1];
 
-    const firmaBase64 = await convertirBase64(file);
+    const blob = Utilities.newBlob(
+      Utilities.base64Decode(base64),
+      "image/png",
+      data.documento + "_firma.png"
+    );
 
-    const datos = {
-        nombre: document.getElementById("nombre").value,
-        documento: document.getElementById("documento").value,
-        nacimiento: document.getElementById("nacimiento").value,
-        direccion: document.getElementById("direccion").value,
-        telefono: document.getElementById("telefono").value,
-        correo: document.getElementById("correo").value,
-        perfil: document.getElementById("perfil").value,
-        educacion: document.getElementById("educacion").value,
-        experiencia: document.getElementById("experiencia").value,
-        habilidades: document.getElementById("habilidades").value,
-        firma: firmaBase64
-    };
+    const file = DriveApp.createFile(blob);
 
-    await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify(datos)
-    });
+    file.setSharing(
+      DriveApp.Access.ANYONE_WITH_LINK,
+      DriveApp.Permission.VIEW
+    );
 
-    document.getElementById("mensaje").innerText =
-        "Registro guardado correctamente";
+    const imageFormula =
+      '=IMAGE("' + file.getDownloadUrl() + '")';
 
-    document.getElementById("registroForm").reset();
-});
+    const values = sheet.getDataRange().getValues();
 
-function convertirBase64(file){
-    return new Promise((resolve, reject)=>{
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
+    let filaEncontrada = -1;
+
+    for (let i = 1; i < values.length; i++) {
+      if (values[i][2] == data.documento) {
+        filaEncontrada = i + 1;
+        break;
+      }
+    }
+
+    const filaDatos = [[
+      new Date(),
+      data.nombre,
+      data.documento,
+      data.nacimiento,
+      data.direccion,
+      data.telefono,
+      data.correo,
+      data.perfil,
+      data.educacion,
+      data.experiencia,
+      data.habilidades,
+      imageFormula
+    ]];
+
+    if (filaEncontrada > 0) {
+      sheet.getRange(filaEncontrada, 1, 1, 12)
+           .setValues(filaDatos);
+    } else {
+      sheet.appendRow(filaDatos[0]);
+    }
+
+    return ContentService
+      .createTextOutput("OK")
+      .setMimeType(ContentService.MimeType.TEXT);
+
+  } catch(err) {
+
+    return ContentService
+      .createTextOutput("ERROR: " + err)
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
 }
