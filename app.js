@@ -1,69 +1,45 @@
-function doPost(e) {
+const scriptURL = "https://script.google.com/macros/library/d/1SKUjpqxtniuwCNnDX23p5cRzHUYj1uRTOdddS5EtAf0uqkSdHNVK1YbN/2";
 
-  try {
+document.getElementById("registroForm").addEventListener("submit", function(e){
+    e.preventDefault();
 
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data = JSON.parse(e.postData.contents);
+    document.getElementById("mensaje").innerText = "Guardando...";
 
-    const base64 = data.firma.split(",")[1];
+    const file = document.getElementById("firma").files[0];
 
-    const blob = Utilities.newBlob(
-      Utilities.base64Decode(base64),
-      "image/png",
-      data.documento + "_firma.png"
-    );
+    convertirBase64(file).then(firmaBase64 => {
 
-    const file = DriveApp.createFile(blob);
+        const datos = {
+            nombre: document.getElementById("nombre").value,
+            documento: document.getElementById("documento").value,
+            nacimiento: document.getElementById("nacimiento").value,
+            direccion: document.getElementById("direccion").value,
+            telefono: document.getElementById("telefono").value,
+            correo: document.getElementById("correo").value,
+            perfil: document.getElementById("perfil").value,
+            educacion: document.getElementById("educacion").value,
+            experiencia: document.getElementById("experiencia").value,
+            habilidades: document.getElementById("habilidades").value,
+            firma: firmaBase64
+        };
 
-    file.setSharing(
-      DriveApp.Access.ANYONE_WITH_LINK,
-      DriveApp.Permission.VIEW
-    );
+        fetch(scriptURL, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(datos)
+        });
 
-    const imageFormula =
-      '=IMAGE("' + file.getDownloadUrl() + '")';
+        document.getElementById("mensaje").innerText =
+            "Registro enviado correctamente";
 
-    const values = sheet.getDataRange().getValues();
+        document.getElementById("registroForm").reset();
+    });
+});
 
-    let filaEncontrada = -1;
-
-    for (let i = 1; i < values.length; i++) {
-      if (values[i][2] == data.documento) {
-        filaEncontrada = i + 1;
-        break;
-      }
-    }
-
-    const filaDatos = [[
-      new Date(),
-      data.nombre,
-      data.documento,
-      data.nacimiento,
-      data.direccion,
-      data.telefono,
-      data.correo,
-      data.perfil,
-      data.educacion,
-      data.experiencia,
-      data.habilidades,
-      imageFormula
-    ]];
-
-    if (filaEncontrada > 0) {
-      sheet.getRange(filaEncontrada, 1, 1, 12)
-           .setValues(filaDatos);
-    } else {
-      sheet.appendRow(filaDatos[0]);
-    }
-
-    return ContentService
-      .createTextOutput("OK")
-      .setMimeType(ContentService.MimeType.TEXT);
-
-  } catch(err) {
-
-    return ContentService
-      .createTextOutput("ERROR: " + err)
-      .setMimeType(ContentService.MimeType.TEXT);
-  }
+function convertirBase64(file){
+    return new Promise((resolve)=>{
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+    });
 }
