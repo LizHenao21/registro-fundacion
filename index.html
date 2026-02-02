@@ -8,7 +8,7 @@
 <style>
 body{
   font-family: Arial;
-  max-width:600px;
+  max-width:700px;
   margin:auto;
   padding:20px;
 }
@@ -17,6 +17,10 @@ input, textarea, button{
   width:100%;
   padding:10px;
   margin:8px 0;
+}
+
+h3{
+  margin-top:25px;
 }
 
 button{
@@ -29,21 +33,36 @@ button{
 
 <body>
 
-<h2>Registro de Participantes</h2>
+<h2>Registro Hoja de Vida</h2>
 
 <form id="registroForm">
 
+<h3>Datos personales</h3>
+
 <input type="text" id="nombre" placeholder="Nombre completo" required>
-
 <input type="text" id="documento" placeholder="Documento" required>
+<input type="date" id="nacimiento" required>
+<input type="text" id="direccion" placeholder="Dirección">
+<input type="tel" id="telefono" placeholder="Teléfono">
+<input type="email" id="correo" placeholder="Correo">
 
-<input type="tel" id="telefono" placeholder="Teléfono" required>
+<h3>Perfil</h3>
 
-<input type="email" id="correo" placeholder="Correo" required>
+<textarea id="perfil" placeholder="Describe tu perfil o experiencia"></textarea>
 
-<textarea id="perfil" placeholder="Cuéntanos sobre ti"></textarea>
+<h3>Educación</h3>
 
-<button type="submit">Guardar Información</button>
+<textarea id="educacion" placeholder="Últimos estudios realizados"></textarea>
+
+<h3>Experiencia laboral</h3>
+
+<textarea id="experiencia" placeholder="Dónde ha trabajado y qué funciones realizó"></textarea>
+
+<h3>Habilidades</h3>
+
+<textarea id="habilidades" placeholder="Ej: Trabajo en equipo, Excel, atención al cliente"></textarea>
+
+<button type="submit">Guardar Hoja de Vida</button>
 
 </form>
 
