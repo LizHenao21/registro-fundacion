@@ -28,3 +28,4 @@ document.getElementById("registroForm").addEventListener("submit", async functio
 
     document.getElementById("registroForm").reset();
 });
+
